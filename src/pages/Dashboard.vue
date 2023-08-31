@@ -43,6 +43,21 @@ export default {
 
 <template>
   <Container>
+    <h1 class="text-4xl font-bold">Dashboards</h1>
+    <br />
+    <div class="flex flex-row">
+      <div class="basis-1/2"></div>
+      <div class="basis-1/2">
+        <div class="flex flex-row justify-content: flex-end">
+          <div class="basis-1/2"></div>
+          <div class="basis-1/2 grid grid-flow-col justify-stretch">
+            <button class="bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded">
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- <div class="mt-4">
       <p
         :class="[
