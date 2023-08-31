@@ -1,9 +1,10 @@
 <script lang="ts">
-import { onMounted, computed } from "vue";
+import { onMounted, computed, ref } from "vue";
 
 import CareerGoal from "../components/DashBoard/CareerGoal.vue";
 import RecentDocuments from "../components/DashBoard/RecentDocuments.vue";
 import Container from "../components/Layout/Container.vue";
+import CommonModal from "../components/Common/Modal.vue"
 import { userStore } from "../store/user";
 import { Roles, DashboardMessage } from "../utils/constants";
 
@@ -13,10 +14,12 @@ export default {
     CareerGoal,
     RecentDocuments,
     Container,
+    CommonModal,
   },
 
   setup() {
     const useUserStore = userStore();
+    const showModal = ref(false);
 
     onMounted(() => {
       useUserStore.fetchUser();
@@ -34,8 +37,16 @@ export default {
       };
     });
 
+    const onCreateDashboardClick = () => {
+      showModal.value = true
+      debugger
+    }
+
+
     return {
       user,
+      onCreateDashboardClick,
+      showModal
     };
   },
 };
@@ -43,20 +54,31 @@ export default {
 
 <template>
   <Container>
-    <h1 class="text-4xl font-bold">Dashboards</h1>
-    <br />
     <div class="flex flex-row">
-      <div class="basis-1/2"></div>
+      <div class="basis-1/2"><h1 class="text-4xl font-bold">Dashboards</h1></div>
       <div class="basis-1/2">
         <div class="flex flex-row justify-content: flex-end">
           <div class="basis-1/2"></div>
+          <div class="basis-1/2"></div>
+          <div class="basis-1/2"></div>
           <div class="basis-1/2 grid grid-flow-col justify-stretch">
-            <button class="bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded">
+            <button @click="onCreateDashboardClick" class="bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded">
               Create
             </button>
           </div>
         </div>
       </div>
+    </div>
+    <div class="flex flex-row">
+      <div class="basis-1/4"></div>
+      <div class="basis-1/4">
+        <CommonModal class="basis-1/3" v-if="showModal" :isOpen="showModal" @update:isOpen="showModal = $event">
+              <template v-slot:default>
+                <p class="text-lg">This is the content of the modal.</p>
+              </template>
+        </CommonModal>
+      </div>
+      <div class="basis-1/4"></div>
     </div>
     <!-- <div class="mt-4">
       <p
