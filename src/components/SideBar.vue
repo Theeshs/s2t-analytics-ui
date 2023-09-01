@@ -26,16 +26,16 @@ export default {
   data() {
     return {
       navItems: [
-        { id: 0, icon: HomeIcon, margin: "pl-3", route: RoutesName.DASHBOARD },
-        { id: 1, icon: NoteIcon, margin: "pl-4", route: RoutesName.DOCUMENT },
-        { id: 2, icon: IdeaIcon, margin: "pl-1", route: RoutesName.IDEA },
-        { id: 3, icon: Protection, margin: "pl-2", route: RoutesName.SECURITY },
-        {
-          id: 4,
-          icon: SettingsIcon,
-          margin: "pl-2",
-          route: RoutesName.SETTING,
-        },
+        { id: 0, icon: HomeIcon, margin: "pl-3", route: RoutesName.HOME },
+        // { id: 1, icon: NoteIcon, margin: "pl-4", route: RoutesName.DOCUMENT },
+        // { id: 2, icon: IdeaIcon, margin: "pl-1", route: RoutesName.IDEA },
+        // { id: 3, icon: Protection, margin: "pl-2", route: RoutesName.SECURITY },
+        // {
+        //   id: 4,
+        //   icon: SettingsIcon,
+        //   margin: "pl-2",
+        //   route: RoutesName.SETTING,
+        // },
       ],
     };
   },

@@ -7,6 +7,7 @@ import Container from "../components/Layout/Container.vue";
 import CommonModal from "../components/Common/Modal.vue"
 import { userStore } from "../store/user";
 import { Roles, DashboardMessage } from "../utils/constants";
+import router from "../router"
 
 export default {
   name: "Dashboard",
@@ -38,7 +39,8 @@ export default {
     });
 
     const onCreateDashboardClick = () => {
-      showModal.value = true
+      router.push('/dashboard/1');
+      // showModal.value = true
       debugger
     }
 
@@ -69,17 +71,17 @@ export default {
         </div>
       </div>
     </div>
-    <div class="flex flex-row">
-      <div class="basis-1/4"></div>
-      <div class="basis-1/4">
-        <CommonModal class="basis-1/3" v-if="showModal" :isOpen="showModal" @update:isOpen="showModal = $event">
+    <!-- <div class="flex flex-row">
+      <div class="grid grid-cols-4 gap-4"></div>
+      <div class="grid grid-cols-4 gap-4 ">
+        <CommonModal v-if="showModal" :isOpen="showModal" @update:isOpen="showModal = $event">
               <template v-slot:default>
                 <p class="text-lg">This is the content of the modal.</p>
               </template>
         </CommonModal>
       </div>
-      <div class="basis-1/4"></div>
-    </div>
+      <div class="grid grid-cols-4 gap-4"></div>
+    </div> -->
     <!-- <div class="mt-4">
       <p
         :class="[

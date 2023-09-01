@@ -10,7 +10,8 @@ export const enum Roles {
 }
 
 export const enum Routes {
-  DASHBOARD = "/",
+  HOME = "/",
+  BUILDER = "/dashboard/:id",
   DOCUMENT = "/document",
   IDEA = "/idea",
   SECURITY = "/security",
@@ -18,7 +19,8 @@ export const enum Routes {
 }
 
 export const enum RoutesName {
-  DASHBOARD = "dashboard",
+  HOME = "home",
+  BUILDER = "builder",
   DOCUMENT = "documents",
   IDEA = "ideas",
   SECURITY = "security",
