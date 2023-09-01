@@ -13,21 +13,21 @@ export default {
   },
 
   setup() {
-    const useDocumentStore = documentStore();
+    // const useDocumentStore = documentStore();
 
     onMounted(() => {
-      useDocumentStore.fetchDocument();
+      // useDocumentStore.fetchDocument();
     });
 
-    const documents = computed(() => {
-      const list = useDocumentStore.getDocument;
-      const isLoading = useDocumentStore.getLoading;
+    // const documents = computed(() => {
+    //   const list = useDocumentStore.getDocument;
+    //   const isLoading = useDocumentStore.getLoading;
 
-      return { list, isLoading };
-    });
+    //   return { list, isLoading };
+    // });
 
     return {
-      documents,
+      // documents,
       formatDate,
     };
   },
@@ -42,7 +42,7 @@ export default {
     </h4>
   </div>
   <div class="border border-gray-scale-two rounded mt-4 mb-4 py-8 px-6">
-    <p v-if="documents.isLoading === 'loading'" class="hidden">loading...</p>
+    <!-- <p v-if="documents.isLoading === 'loading'" class="hidden">loading...</p> -->
     <table class="border-collapse table-fixed w-full text-sm">
       <thead>
         <tr>
@@ -66,7 +66,7 @@ export default {
         </tr>
       </thead>
       <tbody class="bg-white">
-        <tr
+        <!-- <tr
           v-for="document in documents.list"
           :key="document.id"
           class="border-b border-gray-scale-two"
@@ -85,7 +85,7 @@ export default {
           <td>
             <button class="mt-2"><MoreIcon /></button>
           </td>
-        </tr>
+        </tr> -->
       </tbody>
     </table>
   </div>

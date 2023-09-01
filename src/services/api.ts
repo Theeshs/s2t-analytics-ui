@@ -5,11 +5,12 @@ export class API {
   protected _network: Axios;
 
   constructor(endpoint: string) {
-    this._url = `http://localhost:5002/api/${endpoint}`;
+    this._url = `http://localhost:8000/api/${endpoint}`;
     this._network = axios;
   }
 
   protected getData() {
+    debugger
     return this._network.get(this._url);
   }
 }

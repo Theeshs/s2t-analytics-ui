@@ -1,33 +1,71 @@
 <script lang="ts">
     import {onMounted, computed, ref} from "vue"
     import Container from "../components/Layout/Container.vue";
+    import Chart from "../components/Charts/CommonChart.vue";
+    import LineChartIcon from "../components/Icons/LineChartIcon.vue"
+    import BarChartIcon from "../components/Icons/BarChartIcon.vue"
+    import PieChartIcon from "../components/Icons/PieChartIcon.vue"
+    import DoughnutChartIcon from "../components/Icons/DoughnutChatIcon.vue"
+    import jsonData from './chartConfigs.json';
+    import {JsonObject} from "../utils/constants"
+    import CommonModal from "../components/Common/Modal.vue"
 
     export default{
         name: "DashboardBuilder",
         components: {
             Container,
+            Chart,
+            LineChartIcon,
+            BarChartIcon,
+            PieChartIcon,
+            DoughnutChartIcon,
+            CommonModal
+
         },
 
         data() {
             return {
                 charts: [] as string[],
-                chartTypes: ["Bar", "Line", "Pie", "Doughnut"] as string[]
+                chartTypes: ["Bar", "Line", "Pie", "Doughnut"] as string[],
+                chartConfig: {},
             };
         },
         methods: {
-            addCharts(charType: string) {
-                this.charts.push(charType)
-            }
+            addCharts(chartType: any) {
+                if (chartType === "bar") {
+                    this.chartConfig = jsonData["bar"]
+                } else if (chartType === "line") {
+                    this.chartConfig = jsonData["line"]
+                } else if (chartType === "pie") {
+                    this.chartConfig = jsonData["pie"]
+                } else if (chartType === "doughnut") {
+                    this.chartConfig = jsonData["doughnut"]
+                }
+                console.log(this.chartConfig)
+                debugger
+                this.charts.push(chartType)
+            },
         },
 
         setup() {
+
+            const showModal = ref(false)
+            
             onMounted(() => {
+                console.log(jsonData)
+                debugger
+
             })
 
+            const onClieckChart = () => {
+                showModal.value = true
+            }
 
             return {
+                onClieckChart,
+                showModal
             }
-        }
+        },
     }
 </script>
 
@@ -43,18 +81,24 @@
         </div> -->
 
 
-        <div class="flex flex-row">
-            
-            <div class="basis-1/2">
-                <div class="bg-white shadow-sm rounded-lg p-4 flex flex-row">
-                    <div @click="addCharts(chartTtpe)" v-for="(chartTtpe, index) in chartTypes" :key="index" class="basis-1/5">
-                        {{chartTtpe}}
-                    </div>
+        <div class="flex flex-wrap">
+            <div class="bg-white shadow-sm rounded-lg p-4 flex flex-row">
+                <div class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center">
+                    <LineChartIcon @click="addCharts('line')"/>
                 </div>
-            </div>
-            <div class="basis-1/4"></div>
-            <div class="basis-1/4"></div>
-            <div class="basis-1/4"></div>
+                <div class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center">
+                    <BarChartIcon @click="addCharts('bar')"/>
+                </div>
+                <div class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center">
+                    <PieChartIcon @click="addCharts('pie')"/>
+                </div>
+                <!-- <div class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center">
+                    <DoughnutChartIcon @click="addCharts('doughnut')"/>
+                </div> -->
+                    <!-- <div @click="addCharts(chartTtpe)" v-for="(chartTtpe, index) in chartTypes" :key="index" class="basis-1/2">
+                        {{chartTtpe}}
+                    </div> -->
+                </div>
             
         </div>
 
@@ -62,10 +106,22 @@
             <!-- <button @click="addCharts">Add Item</button> -->
             <div class="flex flex-wrap">
                 <div v-for="(chart, index) in charts" :key="index" v-bind:class="`order-${index}`" class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center">
-                    {{ chart }}
+                    <Chart @click="onClieckChart" :divID="`chart-${chart}-${index}`" :chartOptions="chartConfig"/>
                 </div>
             </div>
             
+        </div>
+
+        <div class="flex flex-row">
+        <div class="grid grid-cols-4 gap-4"></div>
+        <div class="grid grid-cols-4 gap-4 ">
+            <CommonModal v-if="showModal" :isOpen="showModal" @update:isOpen="showModal = $event">
+                <template v-slot:default>
+                    <p class="text-lg">This is the content of the modal.</p>
+                </template>
+            </CommonModal>
+        </div>
+        <div class="grid grid-cols-4 gap-4"></div>
         </div>
     </Container>
 </template>

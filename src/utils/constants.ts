@@ -37,3 +37,10 @@ export const enum DashboardMessage {
   FOR_PERSONAL = "Manage your documents.",
   FOR_MANAGER = "Manage your documents issued by SMU Academy or track your career    goal.",
 }
+
+export interface JsonObject {
+  bar: {},
+  line: {},
+  pie: {},
+  doughnut: {}
+}

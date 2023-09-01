@@ -60,3 +60,12 @@ export type DocumentType = {
     total: number;
   };
 };
+
+
+export type DashboardType = {
+  id: number;
+  name: string;
+  createdAt: Date
+  updatedAt: Date
+  isDeleted: Boolean
+};
