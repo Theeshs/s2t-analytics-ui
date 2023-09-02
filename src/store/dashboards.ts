@@ -30,7 +30,9 @@ const dashboardModule: Module<dashboardData, any> = {
       state.error = error;
     },
     setCurrentDashboardID(state: any, payload: DashboardType) {
+      debugger
       state.currentDashboardID = payload.id
+      debugger
     }
   },
   actions: {
@@ -78,6 +80,10 @@ const dashboardModule: Module<dashboardData, any> = {
     getDashboards(state: dashboardData): DashboardType[] {
         return state.dashboards ?? [];
     },
+    getCurrentDashboardID(state: dashboardData): number {
+      debugger
+      return state.currentDashboardID ?? null
+    }
   },
 };
 

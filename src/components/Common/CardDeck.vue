@@ -28,14 +28,14 @@
     setup(props) {
       const store = useStore();
       const dashboards = computed(() => store.getters['getDashboards'])
+
       const onClickDashboard = (id: number) => {
-        debugger
-        console.log(dashboards)
         let dbFound = dashboards.value.filter(db => db.id === id)
-        debugger
+  
         if (dbFound != undefined && dbFound != null && dbFound.lenght != 0) {
-          debugger
+          store.commit('setCurrentDashboardID', dbFound[0])
           router.push(`/dashboard/${dbFound[0].id}`)
+    
         } else {
           alert("unable to load the dashboard")
         }

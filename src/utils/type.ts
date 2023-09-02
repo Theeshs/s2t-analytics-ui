@@ -76,3 +76,17 @@ export type DashboardCreatePayload = {
   updatedAt: Date | null
   isDeleted: Boolean
 }
+
+export type ChartCreatePayloadType = {
+  name: string
+  order: number
+  chartType: number
+  dashboard: number
+}
+
+export type ChartObjectType = {
+  id: string
+  name: string
+  order: number
+  chartType: number
+}

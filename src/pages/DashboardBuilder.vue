@@ -9,6 +9,7 @@
     import jsonData from './chartConfigs.json';
     import {JsonObject} from "../utils/constants"
     import CommonModal from "../components/Common/Modal.vue"
+    import { useStore  } from 'vuex';
 
     export default{
         name: "DashboardBuilder",
@@ -27,11 +28,17 @@
             return {
                 charts: [] as string[],
                 chartTypes: ["Bar", "Line", "Pie", "Doughnut"] as string[],
-                chartConfig: {},
+                // chartConfig: {},
             };
         },
         methods: {
             addCharts(chartType: any) {
+                const chartPayload = {
+                    name: "test",
+                    chart_type: 1,
+                    dashboard: 1,
+                    order: 1
+                }
                 if (chartType === "bar") {
                     this.chartConfig = jsonData["bar"]
                 } else if (chartType === "line") {
@@ -48,13 +55,17 @@
         },
 
         setup() {
-
+            let chartConfig = {}
+            let charts = []
             const showModal = ref(false)
+            const store = useStore();
+            const currentDashboard = computed(() => store.getters['getCurrentDashboardID'])
+            debugger
+
             
             onMounted(() => {
-                console.log(jsonData)
+                console.log(currentDashboard.value)
                 debugger
-
             })
 
             const onClieckChart = (chartType: any) => {
@@ -62,9 +73,35 @@
                 showModal.value = true
             }
 
+            const addCharts = (chartType: any) => {
+                const db = currentDashboard.value
+                const paylaod = {
+                    name: "test",
+                    chart_type: 1,
+                    dashboard: db,
+                    order: 1
+                }
+                debugger
+                if (chartType === "bar") {
+                    chartConfig = jsonData["bar"]
+                } else if (chartType === "line") {
+                    chartConfig = jsonData["line"]
+                } else if (chartType === "pie") {
+                    chartConfig = jsonData["pie"]
+                } else if (chartType === "doughnut") {
+                    chartConfig = jsonData["doughnut"]
+                }
+                console.log(chartConfig)
+                store.dispatch("addChartToDashboard", paylaod)
+                debugger
+                charts.push(chartType)
+            }
+
             return {
                 onClieckChart,
-                showModal
+                showModal,
+                chartConfig,
+                addCharts
             }
         },
     }
