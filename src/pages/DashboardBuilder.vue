@@ -57,7 +57,8 @@
 
             })
 
-            const onClieckChart = () => {
+            const onClieckChart = (chartType: any) => {
+                
                 showModal.value = true
             }
 
@@ -106,7 +107,7 @@
             <!-- <button @click="addCharts">Add Item</button> -->
             <div class="flex flex-wrap">
                 <div v-for="(chart, index) in charts" :key="index" v-bind:class="`order-${index}`" class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center">
-                    <Chart @click="onClieckChart" :divID="`chart-${chart}-${index}`" :chartOptions="chartConfig"/>
+                    <Chart @click="onClieckChart(chart)" :divID="`chart-${chart}-${index}`" :chartOptions="chartConfig"/>
                 </div>
             </div>
             
