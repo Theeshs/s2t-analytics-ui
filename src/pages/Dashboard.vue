@@ -7,6 +7,8 @@ import CardDeck from "../components/Common/CardDeck.vue"
 // import { userStore } from "../store/user";
 import router from "../router"
 import { useStore } from 'vuex';
+import { v4 as uuidv4 } from 'uuid';
+import { DashboardCreatePayload } from "../utils/type"
 
 export default {
   name: "Dashboard",
@@ -21,9 +23,7 @@ export default {
     const showModal = ref(false);
 
     onMounted(() => {
-      debugger
       store.dispatch("fetchData");
-      debugger
     });
 
     // const user = computed(() => {
@@ -39,12 +39,17 @@ export default {
     // });
     const dashboards = computed(() => store.getters['getDashboards'])
     console.log(dashboards.value)
-    debugger
 
     const onCreateDashboardClick = () => {
-      router.push('/dashboard/1');
-      // showModal.value = true
-      debugger
+      const randomUUID = uuidv4();
+      console.log('Random UUID:', randomUUID);
+      let dashboardCratePayload : DashboardCreatePayload = {
+        name: `${randomUUID}-dashboard`,
+        isDeleted: false,
+        createdAt: null,
+        updatedAt: null
+      }
+      store.dispatch("createDashbooard", dashboardCratePayload);
     }
 
 

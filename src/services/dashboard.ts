@@ -1,4 +1,5 @@
 import { API } from "./api";
+import {DashboardCreatePayload} from "../utils/type"
 
 export class DashboardAPI extends API {
   constructor() {
@@ -7,5 +8,9 @@ export class DashboardAPI extends API {
 
   getDashboards() {
     return this.getData();
+  }
+  
+  crateDashboard(payload: DashboardCreatePayload) {
+    return this.createData(payload)
   }
 }

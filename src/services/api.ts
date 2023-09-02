@@ -10,7 +10,10 @@ export class API {
   }
 
   protected getData() {
-    debugger
     return this._network.get(this._url);
+  }
+
+  protected createData(paylaod: any) {
+    return this._network.post(this._url, paylaod)
   }
 }

@@ -69,3 +69,10 @@ export type DashboardType = {
   updatedAt: Date
   isDeleted: Boolean
 };
+
+export type DashboardCreatePayload = {
+  name: string
+  createdAt: Date | null
+  updatedAt: Date | null
+  isDeleted: Boolean
+}
