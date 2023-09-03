@@ -2,6 +2,7 @@
 
 import { Module } from 'vuex';
 import {DashboardAPI} from "../services/dashboard"
+import {chartsTypeAPI} from "../services/chartTypes"
 import {DashboardType, DashboardCreatePayload} from "../utils/type"
 import router from "../router"
 
@@ -9,7 +10,8 @@ interface dashboardData {
     dashboards: any[]; // Replace 'any' with the actual data type you expect
     isLoading: boolean;
     error: string | null;
-    currentDashboardID: number
+    currentDashboardID: number,
+    chartTypes: any[]
 }
 
 const dashboardModule: Module<dashboardData, any> = {
@@ -17,7 +19,8 @@ const dashboardModule: Module<dashboardData, any> = {
     dashboards: [],
     isLoading: true,
     error: false,
-    currentDashboardID: null
+    currentDashboardID: null,
+    chartTypes: []
   },
   mutations: {
     setData(state: any, payload: any) {
@@ -32,7 +35,9 @@ const dashboardModule: Module<dashboardData, any> = {
     setCurrentDashboardID(state: any, payload: DashboardType) {
       debugger
       state.currentDashboardID = payload.id
-      debugger
+    },
+    setChartTypes(state: any, payload: any[]) {
+      state.chartTypes = payload
     }
   },
   actions: {
@@ -53,18 +58,16 @@ const dashboardModule: Module<dashboardData, any> = {
       },
 
     async createDashbooard({commit, rootGetters }, payload: DashboardCreatePayload) {
-      debugger
       const dashboardAPI = new DashboardAPI()
       commit("setLoading", true);
       try {
         const response = await dashboardAPI.crateDashboard(payload);
-        debugger
         let allDashboards = rootGetters.getDashboards
-        debugger
         allDashboards.push(response.data)
         commit('setData', allDashboards);
         console.log(allDashboards)
-        commit("setCurrentDashboardID", response.data.id)
+        debugger
+        commit("setCurrentDashboardID", {"id": response.data.id})
         commit('setError', null);
         router.push(`/dashboard/${response.data.id}`)
       } catch (error) {
@@ -73,6 +76,19 @@ const dashboardModule: Module<dashboardData, any> = {
         console.error('API request failed:', error);
       } finally {
         commit('setLoading', false);
+      }
+    },
+    async fetchChartTypes({commit}) {
+      debugger
+      const chartAPI = new chartsTypeAPI()
+      try {
+        const response = await chartAPI.getCharts();
+        debugger
+        commit("setChartTypes", response.data)
+      } catch(error) {
+        commit('setChartTypes', []);
+        commit('setError', 'Error fetching data. Please try again.');
+        console.error('API request failed:', error);
       }
     }
   },
@@ -83,6 +99,9 @@ const dashboardModule: Module<dashboardData, any> = {
     getCurrentDashboardID(state: dashboardData): number {
       debugger
       return state.currentDashboardID ?? null
+    },
+    getChartTypes(state: dashboardData): any[] {
+      return state.chartTypes ?? []
     }
   },
 };

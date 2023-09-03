@@ -2,10 +2,11 @@
     import {onMounted, computed, ref} from "vue"
     import Container from "../components/Layout/Container.vue";
     import Chart from "../components/Charts/CommonChart.vue";
-    import LineChartIcon from "../components/Icons/LineChartIcon.vue"
-    import BarChartIcon from "../components/Icons/BarChartIcon.vue"
-    import PieChartIcon from "../components/Icons/PieChartIcon.vue"
-    import DoughnutChartIcon from "../components/Icons/DoughnutChatIcon.vue"
+    // import LineChartIcon from "../components/Icons/LineChartIcon.vue"
+    // import BarChartIcon from "../components/Icons/BarChartIcon.vue"
+    // import PieChartIcon from "../components/Icons/PieChartIcon.vue"
+    // import DoughnutChartIcon from "../components/Icons/DoughnutChatIcon.vue"
+    import CommonChartType from "../components/Icons/CommonChartTypeIcon.vue"
     import jsonData from './chartConfigs.json';
     import {JsonObject} from "../utils/constants"
     import CommonModal from "../components/Common/Modal.vue"
@@ -16,56 +17,41 @@
         components: {
             Container,
             Chart,
-            LineChartIcon,
-            BarChartIcon,
-            PieChartIcon,
-            DoughnutChartIcon,
-            CommonModal
+            // LineChartIcon,
+            // BarChartIcon,
+            // PieChartIcon,
+            // DoughnutChartIcon,
+            CommonModal,
+            CommonChartType
 
         },
 
         data() {
             return {
-                charts: [] as string[],
+                // charts: [] as string[],
                 chartTypes: ["Bar", "Line", "Pie", "Doughnut"] as string[],
                 // chartConfig: {},
             };
         },
         methods: {
-            addCharts(chartType: any) {
-                const chartPayload = {
-                    name: "test",
-                    chart_type: 1,
-                    dashboard: 1,
-                    order: 1
-                }
-                if (chartType === "bar") {
-                    this.chartConfig = jsonData["bar"]
-                } else if (chartType === "line") {
-                    this.chartConfig = jsonData["line"]
-                } else if (chartType === "pie") {
-                    this.chartConfig = jsonData["pie"]
-                } else if (chartType === "doughnut") {
-                    this.chartConfig = jsonData["doughnut"]
-                }
-                console.log(this.chartConfig)
-                debugger
-                this.charts.push(chartType)
-            },
         },
 
         setup() {
-            let chartConfig = {}
-            let charts = []
+            const charts = ref([] as string[]);
+            let chartConfig = ref({})
             const showModal = ref(false)
             const store = useStore();
             const currentDashboard = computed(() => store.getters['getCurrentDashboardID'])
-            debugger
+            const chartsFromStore = computed(() => store.getters["getCharts"])
+            const chartTypesAvailable = computed(() => store.getters["getChartTypes"])
 
             
             onMounted(() => {
                 console.log(currentDashboard.value)
                 debugger
+                if (currentDashboard.value !== null && currentDashboard.value !== undefined) {
+                    store.dispatch("fetchChartsForDashboard", currentDashboard.value)
+                }
             })
 
             const onClieckChart = (chartType: any) => {
@@ -75,33 +61,41 @@
 
             const addCharts = (chartType: any) => {
                 const db = currentDashboard.value
+                let currentDrawingChart = chartTypesAvailable.value.filter(element => element.id == chartType)
+                if (currentDrawingChart.length == 1) {
+                    if (currentDrawingChart[0].chart_type === "bar") {
+                        chartConfig.value = jsonData["bar"]
+                    } else if (currentDrawingChart[0].chart_type === "line") {
+                        chartConfig.value = jsonData["line"]
+                    } else if (currentDrawingChart[0].chart_type === "pie") {
+                        chartConfig.value = jsonData["pie"]
+                    } else if (currentDrawingChart[0].chart_type === "doughnut") {
+                        chartConfig.value = jsonData["doughnut"]
+                    }
+                }
                 const paylaod = {
                     name: "test",
-                    chart_type: 1,
+                    chart_type: currentDrawingChart[0].id,
                     dashboard: db,
-                    order: 1
+                    order: chartsFromStore.value.length + 1,
+                    chart_config: chartConfig.value
                 }
                 debugger
-                if (chartType === "bar") {
-                    chartConfig = jsonData["bar"]
-                } else if (chartType === "line") {
-                    chartConfig = jsonData["line"]
-                } else if (chartType === "pie") {
-                    chartConfig = jsonData["pie"]
-                } else if (chartType === "doughnut") {
-                    chartConfig = jsonData["doughnut"]
-                }
                 console.log(chartConfig)
                 store.dispatch("addChartToDashboard", paylaod)
                 debugger
-                charts.push(chartType)
+                charts.value.push(currentDrawingChart[0].chart_type)
+                debugger
             }
 
             return {
                 onClieckChart,
                 showModal,
                 chartConfig,
-                addCharts
+                addCharts,
+                charts,
+                chartTypesAvailable,
+                chartsFromStore,
             }
         },
     }
@@ -121,15 +115,16 @@
 
         <div class="flex flex-wrap">
             <div class="bg-white shadow-sm rounded-lg p-4 flex flex-row">
-                <div class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center">
-                    <LineChartIcon @click="addCharts('line')"/>
+                <div class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center" v-for="(type, index) in chartTypesAvailable" :key="index">
+                    <!-- <LineChartIcon @click="addCharts('line')"/> -->
+                    <CommonChartType @click="addCharts(type.id)" :chartImage="type.chart_image" />
                 </div>
-                <div class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center">
+                <!-- <div class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center">
                     <BarChartIcon @click="addCharts('bar')"/>
                 </div>
                 <div class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center">
                     <PieChartIcon @click="addCharts('pie')"/>
-                </div>
+                </div> -->
                 <!-- <div class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center">
                     <DoughnutChartIcon @click="addCharts('doughnut')"/>
                 </div> -->
@@ -143,8 +138,9 @@
         <div>
             <!-- <button @click="addCharts">Add Item</button> -->
             <div class="flex flex-wrap">
-                <div v-for="(chart, index) in charts" :key="index" v-bind:class="`order-${index}`" class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center">
-                    <Chart @click="onClieckChart(chart)" :divID="`chart-${chart}-${index}`" :chartOptions="chartConfig"/>
+                <div v-for="(chart, index) in chartsFromStore" :key="index" v-bind:class="`order-${index}`" class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center">
+                    <!-- {{ chart }} -->
+                    <Chart @click="onClieckChart(chart)" :divID="`chart-${chart.id}-${index}`" :chartOptions="chart.chart_config"/>
                 </div>
             </div>
             

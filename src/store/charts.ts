@@ -42,7 +42,6 @@ const chartModule: Module<chartData, any> = {
             }
         },
         async addChartToDashboard({commit, rootGetters}, payload: ChartCreatePayloadType) {
-            debugger
             const chartApi = new chartsAPI()
             commit('setLoading', true);
             try {
@@ -56,7 +55,7 @@ const chartModule: Module<chartData, any> = {
             } finally {
                 commit('setLoading', false);
             }
-        }
+        },
     },
     getters: {
         getCharts(state: chartData): ChartObjectType[] {

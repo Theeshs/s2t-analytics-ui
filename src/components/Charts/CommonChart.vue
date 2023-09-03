@@ -11,6 +11,7 @@ export default {
     },
 
     setup(props) {
+        debugger
         console.log(props.chartOptions)
         debugger
         const chartContainerRef = ref(null);

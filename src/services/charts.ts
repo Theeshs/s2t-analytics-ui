@@ -12,8 +12,13 @@ export class chartsAPI extends API {
   }
   
   createChart(id: number, payload: ChartCreatePayloadType) {
-    debugger
     this._url = `${this._url}/${id}/charts`
     return this.createData(payload)
+  }
+  
+  fetchAllChartTypes() {
+    debugger
+    this._url = "http://localhost:8000/api/chart_type"
+    return this.getData()
   }
 }

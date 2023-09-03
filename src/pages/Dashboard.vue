@@ -24,6 +24,7 @@ export default {
 
     onMounted(() => {
       store.dispatch("fetchData");
+      store.dispatch("fetchChartTypes")
     });
 
     // const user = computed(() => {
