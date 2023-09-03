@@ -56,6 +56,26 @@ const chartModule: Module<chartData, any> = {
                 commit('setLoading', false);
             }
         },
+        async editChartData({commit, rootGetters}, payload: any) {
+            debugger
+            const chartApi = new chartsAPI()
+            commit('setLoading', true);
+            try {
+                const response = await chartApi.editChart(payload.url, payload.payload)
+                console.log(response.data)
+                debugger
+                let allCharts = rootGetters.getCharts
+                console.log(allCharts)
+                const updatedJsonArray = allCharts.filter((item) => item.id !== response.data.id);
+                commit("setChartData", updatedJsonArray)
+                updatedJsonArray.push(response.data)
+                commit("setChartData", updatedJsonArray)
+            } catch(error) {
+                commit('setError', 'Error creating chart. Please try again.');
+            } finally {
+                commit('setLoading', false);
+            }
+        }
     },
     getters: {
         getCharts(state: chartData): ChartObjectType[] {

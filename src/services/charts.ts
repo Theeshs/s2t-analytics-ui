@@ -21,4 +21,11 @@ export class chartsAPI extends API {
     this._url = "http://localhost:8000/api/chart_type"
     return this.getData()
   }
+
+  editChart(url: string, payload: any) {
+    debugger
+    const urlToFetch = `http://localhost:8000/api/${url}`
+    debugger
+    return this.updateChartData(urlToFetch, payload)
+  }
 }

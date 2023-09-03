@@ -16,4 +16,8 @@ export class API {
   protected createData(paylaod: any) {
     return this._network.post(this._url, paylaod)
   }
+
+  protected updateChartData(url: string, payload: string) {
+    return this._network.put(url, payload)
+  }
 }

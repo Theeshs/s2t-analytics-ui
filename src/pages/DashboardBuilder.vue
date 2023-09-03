@@ -1,11 +1,7 @@
 <script lang="ts">
-    import {onMounted, computed, ref} from "vue"
+    import {onMounted, computed, ref, onUpdated, watch} from "vue"
     import Container from "../components/Layout/Container.vue";
     import Chart from "../components/Charts/CommonChart.vue";
-    // import LineChartIcon from "../components/Icons/LineChartIcon.vue"
-    // import BarChartIcon from "../components/Icons/BarChartIcon.vue"
-    // import PieChartIcon from "../components/Icons/PieChartIcon.vue"
-    // import DoughnutChartIcon from "../components/Icons/DoughnutChatIcon.vue"
     import CommonChartType from "../components/Icons/CommonChartTypeIcon.vue"
     import jsonData from './chartConfigs.json';
     import {JsonObject} from "../utils/constants"
@@ -42,8 +38,9 @@
             const showModal = ref(false)
             const store = useStore();
             const currentDashboard = computed(() => store.getters['getCurrentDashboardID'])
-            const chartsFromStore = computed(() => store.getters["getCharts"])
+            let chartsFromStore = computed(() => store.getters["getCharts"])
             const chartTypesAvailable = computed(() => store.getters["getChartTypes"])
+            const chartToEdit = ref({})
 
             
             onMounted(() => {
@@ -53,11 +50,19 @@
                     store.dispatch("fetchChartsForDashboard", currentDashboard.value)
                 }
             })
+            onUpdated(() => {
+                debugger
+            })
 
-            const onClieckChart = (chartType: any) => {
-                
+            // watch(chartsFromStore, (newData) => {
+            //     chartsFromStore = newData
+            // })
+
+            const onClieckChart = (chartConfig: any) => {
+                chartToEdit.value = chartConfig
                 showModal.value = true
             }
+            
 
             const addCharts = (chartType: any) => {
                 const db = currentDashboard.value
@@ -80,12 +85,9 @@
                     order: chartsFromStore.value.length + 1,
                     chart_config: chartConfig.value
                 }
-                debugger
                 console.log(chartConfig)
                 store.dispatch("addChartToDashboard", paylaod)
-                debugger
                 charts.value.push(currentDrawingChart[0].chart_type)
-                debugger
             }
 
             return {
@@ -96,6 +98,8 @@
                 charts,
                 chartTypesAvailable,
                 chartsFromStore,
+                chartToEdit,
+                currentDashboard
             }
         },
     }
@@ -139,8 +143,16 @@
             <!-- <button @click="addCharts">Add Item</button> -->
             <div class="flex flex-wrap">
                 <div v-for="(chart, index) in chartsFromStore" :key="index" v-bind:class="`order-${index}`" class="basics-1/2 bg-white shadow-lg m-2 rounded-lg flex items-center justify-center">
-                    <!-- {{ chart }} -->
-                    <Chart @click="onClieckChart(chart)" :divID="`chart-${chart.id}-${index}`" :chartOptions="chart.chart_config"/>
+                    <div class="flex flex-row">
+                        <div>
+                            <Chart :divID="`chart-${chart.id}-${index}`" :chartOptions="chart.chart_config"/>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button @click="onClieckChart(chart)" class="bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded">
+                        Edit
+                        </button>
+                    </div>
                 </div>
             </div>
             
@@ -149,11 +161,7 @@
         <div class="flex flex-row">
         <div class="grid grid-cols-4 gap-4"></div>
         <div class="grid grid-cols-4 gap-4 ">
-            <CommonModal v-if="showModal" :isOpen="showModal" @update:isOpen="showModal = $event">
-                <template v-slot:default>
-                    <p class="text-lg">This is the content of the modal.</p>
-                </template>
-            </CommonModal>
+            <CommonModal v-if="showModal" :isOpen="showModal" :chartToEdit="chartToEdit" :dashboardID="currentDashboard" @update:isOpen="showModal = $event" />
         </div>
         <div class="grid grid-cols-4 gap-4"></div>
         </div>
