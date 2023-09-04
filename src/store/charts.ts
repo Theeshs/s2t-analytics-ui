@@ -1,8 +1,7 @@
 import { Module } from "vuex"
 import { chartsAPI } from "../services/charts"
 import {ChartCreatePayloadType, ChartObjectType} from "../utils/type"
-import { reactive } from "vue";
-import router from "../router"
+
 
 interface chartData {
     charts: any[];

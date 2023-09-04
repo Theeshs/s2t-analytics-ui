@@ -67,6 +67,8 @@
             // })
 
             const onClieckChart = (chartConfig: any) => {
+                debugger
+                store.dispatch("fetchDataSources", chartConfig.chart_type)
                 chartToEdit.value = chartConfig
                 showModal.value = true
             }
