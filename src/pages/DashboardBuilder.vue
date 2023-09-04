@@ -29,7 +29,14 @@
                 // chartConfig: {},
             };
         },
-        methods: {
+        computed: {
+            // chartsFromStore() {
+            //     const chartStore = useStore();
+            //     debugger
+            //     const stCharts = chartStore.state.chartsModule.charts;
+            //     debugger
+            //     return stCharts
+            // }
         },
 
         setup() {
@@ -38,9 +45,10 @@
             const showModal = ref(false)
             const store = useStore();
             const currentDashboard = computed(() => store.getters['getCurrentDashboardID'])
-            let chartsFromStore = computed(() => store.getters["getCharts"])
+            // let chartsFromStore = computed(() => store.getters["getCharts"])
             const chartTypesAvailable = computed(() => store.getters["getChartTypes"])
             const chartToEdit = ref({})
+            const chartsFromStore = computed(() => store.getters["getCharts"])
 
             
             onMounted(() => {

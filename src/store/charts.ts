@@ -1,6 +1,8 @@
 import { Module } from "vuex"
 import { chartsAPI } from "../services/charts"
 import {ChartCreatePayloadType, ChartObjectType} from "../utils/type"
+import { reactive } from "vue";
+import router from "../router"
 
 interface chartData {
     charts: any[];
@@ -24,6 +26,16 @@ const chartModule: Module<chartData, any> = {
         },
         setError(state: any, error: any) {
             state.error = error;
+        },
+        updateChart(state:any, updatedChart: any) {
+            const index = state.charts.findIndex((chart) => chart.id === updatedChart.id);
+            debugger
+            if (index !== -1) {
+                debugger
+                const updated = { ...state.charts[index], ...updatedChart };
+                debugger
+                state.charts[index] = updated;
+            }
         },
     },
     actions: {
@@ -64,12 +76,7 @@ const chartModule: Module<chartData, any> = {
                 const response = await chartApi.editChart(payload.url, payload.payload)
                 console.log(response.data)
                 debugger
-                let allCharts = rootGetters.getCharts
-                console.log(allCharts)
-                const updatedJsonArray = allCharts.filter((item) => item.id !== response.data.id);
-                commit("setChartData", updatedJsonArray)
-                updatedJsonArray.push(response.data)
-                commit("setChartData", updatedJsonArray)
+                commit("updateChart", response.data)
             } catch(error) {
                 commit('setError', 'Error creating chart. Please try again.');
             } finally {
