@@ -49,6 +49,7 @@
             const chartTypesAvailable = computed(() => store.getters["getChartTypes"])
             const chartToEdit = ref({})
             const chartsFromStore = computed(() => store.getters["getCharts"])
+            const storeChartType = computed(() => store.getters["getChartType"])
 
             
             onMounted(() => {
@@ -70,6 +71,8 @@
                 debugger
                 store.dispatch("fetchDataSources", chartConfig.chart_type)
                 chartToEdit.value = chartConfig
+                let x = storeChartType.value
+                debugger
                 showModal.value = true
             }
             
@@ -109,7 +112,8 @@
                 chartTypesAvailable,
                 chartsFromStore,
                 chartToEdit,
-                currentDashboard
+                currentDashboard,
+                storeChartType
             }
         },
     }

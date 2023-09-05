@@ -76,6 +76,7 @@ const chartModule: Module<chartData, any> = {
                 console.log(response.data)
                 debugger
                 commit("updateChart", response.data)
+                commit("setColumns", [])
             } catch(error) {
                 commit('setError', 'Error creating chart. Please try again.');
             } finally {

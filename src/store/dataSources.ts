@@ -8,6 +8,7 @@ interface dataSources {
     dataSources: any[];
     isLoading: boolean;
     error: string | null;
+    columns: any[]
 }
 
 const dataSourcesModule: Module<dataSources, any> = {
@@ -16,7 +17,8 @@ const dataSourcesModule: Module<dataSources, any> = {
         chartType: "",
         dataSources: [],
         isLoading: true,
-        error: false
+        error: false,
+        columns: []
     },
     mutations: {
         setChartTypeIDNew(state: any, id: number) {
@@ -34,6 +36,9 @@ const dataSourcesModule: Module<dataSources, any> = {
         setError(state: any, error: any) {
             state.error = error;
         },
+        setColumns(state: any, columns: []) {
+            state.columns = columns
+        }
     },
     actions: {
         async fetchDataSources({commit}, id: number) {
@@ -44,7 +49,22 @@ const dataSourcesModule: Module<dataSources, any> = {
                 const response = await dtsAPI.getDataSources(id)
                 commit("setChartTypeIDNew", response.data.chart_type_id)
                 commit("setChartType", response.data.chart_type)
-                commit("setDataSources", response.data.columns)
+                commit("setDataSources", response.data.data_sources)
+            } catch(e) {
+                commit('setError', 'Error fetching data sources. Please try again.')
+            } finally {
+                commit('setLoading', false);
+            }
+        },
+        async fetchDataSourcesColumns({commit}, payload: any) {
+            debugger
+            const dtsAPI = new dataSourcesAPI()
+            commit('setLoading', true);
+            try {
+                debugger
+                const response = await dtsAPI.getDataSourceColumns(payload)
+                debugger
+                commit("setColumns", response.data)
             } catch(e) {
                 commit('setError', 'Error fetching data sources. Please try again.')
             } finally {
@@ -58,6 +78,9 @@ const dataSourcesModule: Module<dataSources, any> = {
         },
         getDataSoureces(state: dataSources): any[] {
             return state.dataSources ?? []
+        },
+        getColumns(state: dataSources): any[] {
+            return state.columns ?? []
         }
     }
 }
