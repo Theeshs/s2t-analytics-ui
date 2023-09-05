@@ -59,6 +59,7 @@ export default {
       store.dispatch("editChartData", payload)
       // debugger
       emit('update:isOpen', false);
+      
       // if (!isLoading) {
       //   de
       // } 
