@@ -53,12 +53,6 @@
       "name": ""
       }
 
-      // watch(() => props.cards, (newCardData) => {
-      //   debugger
-      //       // debugger
-      //       // props.cards = newCardData
-      // });
-
       const onClickDashboard = (id: number) => {
         let dbFound = dashboards.value.filter(db => db.id === id)
   
@@ -72,7 +66,6 @@
       }
 
       const onClickDeleteButton = (dbID: number) => {
-        debugger
         store.dispatch("deleteDashboard", dbID)
       }
       
@@ -89,7 +82,7 @@
           "id": card.id,
           "payload": formData
         }
-        debugger
+
         store.dispatch("updateDashboard", payLoad)
         enableForm.value = false
       }

@@ -17,7 +17,6 @@ export default {
         let chart: Highcharts.Chart | null = null;
 
         watch(() => props.chartOptions, (newChartData) => {
-            debugger
             // Update or redraw the chart when props.chartData changes
             // Use the charting library's API to achieve this
             chart = Highcharts.chart(
