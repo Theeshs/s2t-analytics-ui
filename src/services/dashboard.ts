@@ -13,4 +13,12 @@ export class DashboardAPI extends API {
   crateDashboard(payload: DashboardCreatePayload) {
     return this.createData(payload)
   }
+
+  deleteDashboard(id: number): any {
+    return this.deleteData(id)
+  }
+
+  updateDashboard(id: number, paylaod: any) {
+    return this.updateData(id, paylaod)
+  }
 }

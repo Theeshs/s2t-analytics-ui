@@ -24,7 +24,7 @@ export default {
   },
   setup(props, { emit }) {
     const store = useStore()
-    debugger
+
     const formData: FormData = {
       "title": "",
       "subTitle": "",
@@ -35,13 +35,6 @@ export default {
     }
     const selecteDataSource = null
     onMounted(() => {
-      // console.log(props.isOpen);
-      // watch(() => props.chartType, (newChartData) => {
-      //   debugger
-      //   if(props.chartType === "line") {
-      //     line = true
-      //   }
-      // });
 
     });
     // const emit = defineEmits()
@@ -57,7 +50,6 @@ export default {
         payload: formData
       }
       store.dispatch("editChartData", payload)
-      // debugger
       emit('update:isOpen', false);
       
       // if (!isLoading) {
@@ -67,7 +59,6 @@ export default {
     }
 
     const close = () => {
-      // debugger;
       emit('update:isOpen', false);
     };
 
@@ -77,13 +68,13 @@ export default {
         "chartType": chartType.value,
         "sourceName": formData.dataSourceName
       }
-      debugger
+    
       store.dispatch("fetchDataSourcesColumns", payload)
     }
 
     const cType = () => {
       if (chartType.value === "line") {
-        debugger
+      
         return true
       } else {
         return false

@@ -28,12 +28,18 @@ const chartModule: Module<chartData, any> = {
         },
         updateChart(state:any, updatedChart: any) {
             const index = state.charts.findIndex((chart) => chart.id === updatedChart.id);
-            debugger
+            
             if (index !== -1) {
-                debugger
+                
                 const updated = { ...state.charts[index], ...updatedChart };
-                debugger
+                
                 state.charts[index] = updated;
+            }
+        },
+        removeChartAndReUpdate(state: any, id: number) {
+            const index = state.charts.findIndex((chart) => chart.id === id);
+            if (index !== -1) {
+              state.charts.splice(index, 1);
             }
         },
     },
@@ -68,13 +74,13 @@ const chartModule: Module<chartData, any> = {
             }
         },
         async editChartData({commit, rootGetters}, payload: any) {
-            debugger
+            
             const chartApi = new chartsAPI()
             commit('setLoading', true);
             try {
                 const response = await chartApi.editChart(payload.url, payload.payload)
                 console.log(response.data)
-                debugger
+                
                 commit("updateChart", response.data)
                 commit("setColumns", [])
             } catch(error) {
@@ -82,6 +88,21 @@ const chartModule: Module<chartData, any> = {
             } finally {
                 commit('setLoading', false);
             }
+        },
+        async deleteChart({commit}, id: number) {
+            const chartApi = new chartsAPI()
+            commit('setLoading', true);
+            try {
+                const response = await chartApi.deleteChartByID(id)
+                
+                commit("removeChartAndReUpdate", id)
+                commit("setColumns", [])
+            } catch(error) {
+                commit('setError', 'Error creating chart. Please try again.');
+            } finally {
+                commit('setLoading', false);
+            }
+
         }
     },
     getters: {

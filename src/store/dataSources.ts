@@ -42,7 +42,7 @@ const dataSourcesModule: Module<dataSources, any> = {
     },
     actions: {
         async fetchDataSources({commit}, id: number) {
-            debugger
+            
             const dtsAPI = new dataSourcesAPI()
             commit('setLoading', true);
             try {
@@ -57,13 +57,13 @@ const dataSourcesModule: Module<dataSources, any> = {
             }
         },
         async fetchDataSourcesColumns({commit}, payload: any) {
-            debugger
+            
             const dtsAPI = new dataSourcesAPI()
             commit('setLoading', true);
             try {
-                debugger
+                
                 const response = await dtsAPI.getDataSourceColumns(payload)
-                debugger
+                
                 commit("setColumns", response.data)
             } catch(e) {
                 commit('setError', 'Error fetching data sources. Please try again.')

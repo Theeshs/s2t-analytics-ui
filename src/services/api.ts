@@ -20,4 +20,19 @@ export class API {
   protected updateChartData(url: string, payload: string) {
     return this._network.put(url, payload)
   }
+
+  protected deleteData(id: number) {
+    
+    return this._network.delete(`${this._url}/${id}`)
+  }
+
+  protected updateData(id: number, paylaod: any) {
+    
+    return this._network.put(`${this._url}/${id}`, paylaod)
+  }
+
+  protected deletebyUrl(url: string) {
+    
+    return this._network.delete(url)
+  }
 }
