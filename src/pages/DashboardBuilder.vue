@@ -9,6 +9,7 @@ import CommonModal from "../components/Common/Modal.vue"
 import { useStore } from 'vuex';
 import EditIcon from "../components/Icons/Edit.vue"
 import DeleteIcon from "../components/Icons/DeleteIcon.vue"
+import { chartsAPI } from "../services/charts";
 
 export default {
     name: "DashboardBuilder",
@@ -98,7 +99,9 @@ export default {
                 chart_type: currentDrawingChart[0].id,
                 dashboard: db,
                 order: chartsFromStore.value.length + 1,
-                chart_config: chartConfig.value
+                chart_config: chartConfig.value,
+                height: 4,
+                width: 5
             }
             console.log(chartConfig)
             store.dispatch("addChartToDashboard", paylaod)
@@ -146,9 +149,8 @@ export default {
         </div>
 
         <div>
-            <div class="flex flex-wrap">
-                <div v-for="(chart, index) in chartsFromStore" :key="index" :class="`order-${index}`"
-                    class="w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 p-4">
+            <div class="flex flex-row">
+                <div v-for="(chart, index) in chartsFromStore" :key="index" :class="`order-${index}`">
                     <div class="bg-white shadow-lg rounded-lg">
                         <div class="p-4 flex justify-between items-center">
                             <div class="flex items-center">
@@ -166,7 +168,7 @@ export default {
                             </div>
                         </div>
                         <div class="p-4">
-                            <Chart :divID="`chart-${chart.id}-${index}`" :chartOptions="chart.chart_config" />
+                            <Chart :divID="`chart-${chart.id}-${index}`" :chartOptions="chart.chart_config" :width="chart.width" :height="chart.height"/>
                         </div>
                     </div>
                 </div>

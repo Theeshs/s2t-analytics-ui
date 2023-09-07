@@ -7,10 +7,13 @@ export default {
     name: "Chart",
     props: {
         divID: String,
-        chartOptions: Object
+        chartOptions: Object,
+        height: Number,
+        width: Number
     },
 
     setup(props) {
+        debugger
         console.log(props.chartOptions)
         const chartContainerRef = ref(null);
         const chartOptions = ref<Highcharts.Options>(props.chartOptions);
@@ -27,7 +30,11 @@ export default {
 
 
         onMounted(() => {
+            // chartOptions.value.plotBox.height = 1000
+            // chartOptions.value["plotBox"]["width"] = 50
             // console.log(chartContainerRef.value)
+            chartOptions.value.plotHeight=props.height
+            chartOptions.value.plotWidth=props.width
             chart = Highcharts.chart(
                 props.divID,
                 chartOptions.value
@@ -51,5 +58,5 @@ export default {
 
 
 <template>
-    <div :id="props.divID"></div>
+    <div :style="{width: props.width, height:props.height}" :id="props.divID" ></div>
 </template>

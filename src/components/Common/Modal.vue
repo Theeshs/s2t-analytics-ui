@@ -9,6 +9,8 @@ interface FormData {
    yAxis: string;
    dataSourceName: string;
    linChartValues: []
+   height: number
+   width: number
 }
 
 export default {
@@ -31,7 +33,9 @@ export default {
       "xAxis": "",
       "yAxis": "",
       "dataSourceName": "",
-      "linChartValues": []
+      "linChartValues": [],
+      "height": 0,
+      "width": 0
     }
     const selecteDataSource = null
     onMounted(() => {
@@ -111,6 +115,16 @@ export default {
           <div class="mb-4">
             <label for="subTitle" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub Title</label>
             <input type="text" id="subTitle" name="subTitle" v-model="formData.subTitle"
+              class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300" />
+          </div>
+          <div class="mb-4">
+            <label for="height" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Height</label>
+            <input type="text" id="height" name="height" v-model="formData.height"
+              class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300" />
+          </div>
+          <div class="mb-4">
+            <label for="height" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Width</label>
+            <input type="text" id="height" name="height" v-model="formData.width"
               class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300" />
           </div>
           <div class="mb-4">

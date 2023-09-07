@@ -6,7 +6,7 @@
           <div class="bg-white shadow-md rounded-lg p-4">
             <img src="https://picsum.photos/200" alt="Card Image" class="mb-4 w-full h-auto" />
             <!-- Card content goes here -->
-            <h2 v-if="!enableForm"  class="text-lg font-semibold" @click="onClickDashboard(card.id)">{{card.name}}</h2>
+            <a><h2 v-if="!enableForm"  class="text-lg font-semibold" @click="onClickDashboard(card.id)">{{card.name}}</h2></a>
             <label v-if="enableForm" for="dashboardName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dashboard Name</label>
             <input v-if="enableForm" v-model="formData.name" type="text" id="dashboardName" name="dashboardName" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300" />
             <!-- <p class="text-gray-600">Card content goes here.</p> -->

@@ -82,6 +82,8 @@ export type ChartCreatePayloadType = {
   order: number
   chartType: number
   dashboard: number
+  height: number
+  width: number
 }
 
 export type ChartObjectType = {
@@ -89,4 +91,6 @@ export type ChartObjectType = {
   name: string
   order: number
   chartType: number
+  height: number
+  width: number
 }
